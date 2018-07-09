@@ -9,14 +9,15 @@ public class Main {
 	
 	 public static void main(String[] args) {
 		 System.out.println("toHome");		 		 
-		 folder(START1,1);
-		 folder(START2,2);
+		 System.out.println("toHome VER 1.1");
+		 folder(START1,1); //Usuário michaelcb
+		 folder(START2,2); //Dafault Folder
 		 System.out.println("Execution Terminated");
 	 }
 
 	 private static int folder(String path, int start) {
 		 File folder = new File(path);
-		 //File dest;
+		 
 		 System.out.println("Openning Directory: " + path);
 		 File[] listOfFiles = folder.listFiles();
 		 if(listOfFiles == null) {
@@ -25,15 +26,14 @@ public class Main {
 		 
 		     for (int i = 0; i < listOfFiles.length; i++) {
 		       if (listOfFiles[i].isFile()) {
-		         //System.out.println("File: " + listOfFiles[i].getAbsolutePath());
-		         //Se primeiro start Menu
 		         if(start==1) {
-		        	 if(!listOfFiles[i].getName().equals(START1+"\\"+listOfFiles[i].getName())) {
+		        	 if((!listOfFiles[i].getName().equals(START1+"\\"+listOfFiles[i].getName()))&&(!listOfFiles[i].getAbsolutePath().contains("Start Menu"))) {
 		        		 System.out.println(listOfFiles[i].getAbsolutePath()+" MOVE to: "+START1+"\\"+listOfFiles[i].getName());
 		        		 listOfFiles[i].renameTo(new File(START1+"\\"+listOfFiles[i].getName()));
+		        		 
 		        	 }		        		 
 		         }else {
-		        	 if(!listOfFiles[i].getName().equals(START2+"\\"+listOfFiles[i].getName())) {
+		        	 if((!listOfFiles[i].getName().equals(START2+"\\"+listOfFiles[i].getName()))&&(!listOfFiles[i].getAbsolutePath().contains("Start Menu"))) {
 		        		 System.out.println(listOfFiles[i].getAbsolutePath()+" MOVE to: "+START2+"\\"+listOfFiles[i].getName());
 		        		 listOfFiles[i].renameTo(new File(START2+"\\"+listOfFiles[i].getName()));	 
 		        	 }
