@@ -1,56 +1,53 @@
+//this a comment
 package toHome;
 
 import java.io.File;
 
 public class Main {
-	
-	private static String START1 = "C:\\Users\\michaelcb\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu";
-	private static String START2 = "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs";
-	
-	 public static void main(String[] args) {
-		 System.out.println("toHome");		 		 
-		 System.out.println("toHome VER 1.1");
-		 folder(START1,1); //Usuário michaelcb
-		 folder(START2,2); //Dafault Folder
-		 System.out.println("Execution Terminated");
-	 }
 
-	 private static int folder(String path, int start) {
-		 File folder = new File(path);
-		 
-		 System.out.println("Openning Directory: " + path);
-		 File[] listOfFiles = folder.listFiles();
-		 if(listOfFiles == null) {
-			return 1; 
-		 }		 
-		 
-		     for (int i = 0; i < listOfFiles.length; i++) {
-		       if (listOfFiles[i].isFile()) {
-		         if(start==1) {
-		        	 if((!listOfFiles[i].getName().equals(START1+"\\"+listOfFiles[i].getName()))&&(!listOfFiles[i].getAbsolutePath().contains("Start Menu"))) {
-		        		 System.out.println(listOfFiles[i].getAbsolutePath()+" MOVE to: "+START1+"\\"+listOfFiles[i].getName());
-		        		 listOfFiles[i].renameTo(new File(START1+"\\"+listOfFiles[i].getName()));
-		        		 
-		        	 }		        		 
-		         }else {
-		        	 if((!listOfFiles[i].getName().equals(START2+"\\"+listOfFiles[i].getName()))&&(!listOfFiles[i].getAbsolutePath().contains("Start Menu"))) {
-		        		 System.out.println(listOfFiles[i].getAbsolutePath()+" MOVE to: "+START2+"\\"+listOfFiles[i].getName());
-		        		 listOfFiles[i].renameTo(new File(START2+"\\"+listOfFiles[i].getName()));	 
-		        	 }
-		         }
-		       } else if (listOfFiles[i].isDirectory()) {
-		         System.out.println("Directory: " + listOfFiles[i].getAbsolutePath());
-		         if(folder(listOfFiles[i].getAbsolutePath(), start)==1) {
-		        	 listOfFiles[i].delete();
-		         }
-		       }
-		     }
-		     
-		     listOfFiles = folder.listFiles();
-		     if(listOfFiles.length==0) {
-		    	 folder.delete();
-		     }
-		     
-			return 0;
-	 }	 
+    private static String[] starts = {	"C:\\Users\\mbura\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs",
+    									"C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs"	};
+
+    public static void main(String[] args) {
+        JavaElevator.elevate(args);
+    	System.out.println("toHome");
+        System.out.println("toHome VER 1.2");
+        
+        for(String start : starts)
+        	folder(start);
+       
+        System.out.println("Execution Terminated");
+    }
+
+    private static int folder(String path) {
+        File folder = new File(path);
+
+        System.out.println("Openning Directory: " + path);
+        File[] listOfFiles = folder.listFiles(); 
+        
+        folder.listFiles();
+        
+        for (File file : listOfFiles)
+            if (file.isFile()) {
+            	if (!file.getName().equals(path + "\\" + file.getName())) {
+            		System.out.println(file.getAbsolutePath() + " MOVE to: " + path + "\\" + file.getName());
+            		file.renameTo(new File(path + "\\" + file.getName()));
+            	}
+            } else if (file.isDirectory()) {
+                System.out.println("Directory: " + file.getAbsolutePath());
+                if (folder(file.getAbsolutePath()) == 1) {
+                	file.delete();
+                }
+            }
+
+        return FolderIsVoid(folder);
+    }
+    
+    static int FolderIsVoid(File folder) {        
+        if (folder.listFiles().length == 0) {
+            folder.delete();
+            return 1;
+        }
+        return 0;
+    }
 }
