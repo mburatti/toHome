@@ -15,13 +15,10 @@ public class JavaElevator {
     
     /**
      * If requested, elevates the Java process started with the given arguments to administrator level.
-     * 
+     *
      * @param args The Java program arguments
-     * @return The cleaned program arguments
      */
-    public static String[] elevate(String[] args) {
-        String[] result = args;
-
+    public static void elevate(String[] args) {
 
             // Get the command and remove the elevation marker.
             String command = System.getProperty("sun.java.command");
@@ -47,7 +44,6 @@ public class JavaElevator {
                 errorMessage += "\n  parameters: " + parameters;
                 throw new IllegalStateException("Error performing elevation: " + lastError + ": " + errorMessage);
             }
-                    
-        return result;
+
     }
 }

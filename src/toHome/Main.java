@@ -1,6 +1,9 @@
 package toHome;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 import toHome.filesManagement.BlackList;
@@ -9,9 +12,7 @@ import toHome.systemOperations.JavaElevator;
 public class Main {
 
     //Find correct dir for Start
-    private static final String[] STARTS = {
-        "C:\\Users\\mbura\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs",
-        "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs"};
+    private static final List<String> starts = listOfDirs();
 
     private static String currentRoot;
 
@@ -20,10 +21,10 @@ public class Main {
         System.out.println("toHome");
         System.out.println("toHome VER 1.3");
 
-        for (String start : STARTS) {
+        starts.forEach((start) -> {
             currentRoot = start;
             verifyFolder(start);
-        }
+        });
 
         System.out.println("Execution Terminated");
     }
@@ -84,4 +85,23 @@ public class Main {
         }
         return false;
     }
+
+    private static List<String> listOfDirs(){
+        File file = new File("C:\\Users");
+        List<String> badUserFolders = Arrays.asList("All Users", "Default", "Default User", "Public");
+
+        String[] userFolders = file.list((current, name) -> new File(current, name).isDirectory());
+        assert userFolders != null;
+
+        //"C:\\Users\\mbura\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs",
+        List<String> dirs = new ArrayList<>();
+        dirs.add("C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs");
+
+        for(String userFolder : userFolders)
+            if(!badUserFolders.contains(userFolder))
+                dirs.add("C:\\Users\\" + userFolder + "\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs");
+
+        return dirs;
+    }
+
 }
