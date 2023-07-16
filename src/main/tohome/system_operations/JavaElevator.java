@@ -1,4 +1,4 @@
-package toHome.systemOperations;
+package main.tohome.system_operations;
 
 import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.Kernel32Util;
@@ -15,10 +15,8 @@ public class JavaElevator {
     
     /**
      * If requested, elevates the Java process started with the given arguments to administrator level.
-     *
-     * @param args The Java program arguments
      */
-    public static void elevate(String[] args) {
+    public static void elevate() {
 
             // Get the command and remove the elevation marker.
             String command = System.getProperty("sun.java.command");

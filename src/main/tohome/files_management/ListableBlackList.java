@@ -1,4 +1,4 @@
-package toHome.filesManagement;
+package main.tohome.files_management;
 /**
  * Loads a list from a file
  */
