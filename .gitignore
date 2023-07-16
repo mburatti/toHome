@@ -2,5 +2,8 @@
 /.idea
 /.settings
 /bin
+/target
 /.vscode
 /.github
+*.class
+*.jar

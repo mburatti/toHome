@@ -14,8 +14,6 @@ public class Main {
         "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs"};
 
     private static String currentRoot;
-    private static String source;
-    private static String destiny;
 
     public static void main(String[] args) {
         JavaElevator.elevate(args);
@@ -33,7 +31,7 @@ public class Main {
     /**
      * verifyFolder.
      *
-     * @param path
+     * @param path is the folder to be analysed.
      * @return true if the folder is empty
      */
     private static boolean verifyFolder(String path) {
@@ -47,11 +45,12 @@ public class Main {
                 if (blackList.contains(file.getName())) {
                     deleteFile(file);
                 } else {
-                    source = file.getAbsolutePath();
-                    destiny = getDestinyFileName(file);
+                    String source = file.getAbsolutePath();
+                    String destiny = getDestinyFileName(file);
 
                     if (!source.equalsIgnoreCase(destiny)) {
                         System.out.println(file.getAbsolutePath() + " MOVE to: " + getDestinyFileName(file));
+                        //noinspection ResultOfMethodCallIgnored
                         file.renameTo(new File(getDestinyFileName(file)));
                     }
                 }
@@ -61,6 +60,7 @@ public class Main {
             if (file.isDirectory()) {
                 System.out.println("Directory: " + file.getAbsolutePath());
                 if (verifyFolder(file.getAbsolutePath())) {
+                    //noinspection ResultOfMethodCallIgnored
                     file.delete();
                 }
             }
