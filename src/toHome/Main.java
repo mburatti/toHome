@@ -1,12 +1,17 @@
-//this a comment
 package toHome;
 
 import java.io.File;
+import java.util.Objects;
 
+import toHome.filesManagement.BlackList;
+import toHome.filesManagement.ListableBlackList;
+import toHome.systemOperations.JavaElevator;
 public class Main {
 
-    private static final String[] starts = {"C:\\Users\\mbura\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs",
-            "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs"};
+    //Find correct dir for Start
+    private static final String[] STARTS = {
+        "C:\\Users\\mbura\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs",
+        "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs"};
 
     private static String currentRoot;
     private static String source;
@@ -15,13 +20,12 @@ public class Main {
     public static void main(String[] args) {
         JavaElevator.elevate(args);
         System.out.println("toHome");
-        System.out.println("toHome VER 1.2");
+        System.out.println("toHome VER 1.3");
 
-        for (String start : starts) {
+        for (String start : STARTS) {
             currentRoot = start;
             verifyFolder(start);
         }
-
 
         System.out.println("Execution Terminated");
     }
@@ -34,12 +38,13 @@ public class Main {
      */
     private static boolean verifyFolder(String path) {
         File folder = new File(path);
-
         File[] listOfFiles = folder.listFiles();
+        ListableBlackList blackList = new BlackList();
 
+        assert listOfFiles != null;
         for (File file : listOfFiles)
             if (file.isFile()) {
-                if (BlackList.contains(file.getName())) {
+                if (blackList.contains(file.getName())) {
                     deleteFile(file);
                 } else {
                     source = file.getAbsolutePath();
@@ -73,7 +78,7 @@ public class Main {
     }
 
     static boolean isFolderVoid(File folder) {
-        if (folder.listFiles().length == 0) {
+        if (Objects.requireNonNull(folder.listFiles()).length == 0) {
             deleteFile(folder);
             return true;
         }
